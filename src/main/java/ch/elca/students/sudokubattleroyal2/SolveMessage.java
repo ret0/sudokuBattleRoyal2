@@ -1,6 +1,6 @@
-package hello;
+package ch.elca.students.sudokubattleroyal2;
 
-public class HelloMessage {
+public class SolveMessage {
 
     private String name;
     

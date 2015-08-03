@@ -1,10 +1,10 @@
-package hello;
+package ch.elca.students.sudokubattleroyal2;
 
-public class Greeting {
+public class Board {
     
     private String content;
 
-    public Greeting(String content) {
+    public Board(String content) {
         this.content = content;
     }
 

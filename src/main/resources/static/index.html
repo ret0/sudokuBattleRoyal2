@@ -5,7 +5,7 @@
     <script src="sockjs-0.3.4.js"></script>
     <script src="stomp.js"></script>
     <script type="text/javascript">
-        var stompClient = null;
+        var sudokuClient = null;
         
         function setConnected(connected) {
             document.getElementById('connect').disabled = connected;
@@ -15,20 +15,20 @@
         }
         
         function connect() {
-            var socket = new SockJS('/hello');
-            stompClient = Stomp.over(socket);            
-            stompClient.connect({}, function(frame) {
+            var socket = new SockJS('/solve');
+            sudokuClient = Stomp.over(socket);
+            sudokuClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/greetings', function(greeting){
-                    showGreeting(JSON.parse(greeting.body).content);
+                sudokuClient.subscribe('/game/board', function(board){
+                    updateBoard(JSON.parse(board.body).content);
                 });
             });
         }
         
         function disconnect() {
-            if (stompClient != null) {
-                stompClient.disconnect();
+            if (sudokuClient != null) {
+                sudokuClient.disconnect();
             }
             setConnected(false);
             console.log("Disconnected");
@@ -36,10 +36,10 @@
         
         function sendName() {
             var name = document.getElementById('name').value;
-            stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
+            sudokuClient.send("/sudoku/solve", {}, JSON.stringify({ 'name': name }));
         }
         
-        function showGreeting(message) {
+        function updateBoard(message) {
             var response = document.getElementById('response');
             var p = document.createElement('p');
             p.style.wordWrap = 'break-word';

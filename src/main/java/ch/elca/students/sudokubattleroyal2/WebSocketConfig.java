@@ -1,4 +1,4 @@
-package hello;
+package ch.elca.students.sudokubattleroyal2;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -12,13 +12,13 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic");
-		config.setApplicationDestinationPrefixes("/app");
+		config.enableSimpleBroker("/game");
+		config.setApplicationDestinationPrefixes("/sudoku");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/hello").withSockJS();
+		registry.addEndpoint("/solve").withSockJS();
 	}
 
 }
