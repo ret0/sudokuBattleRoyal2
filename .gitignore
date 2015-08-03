@@ -1,5 +1,23 @@
 *.class
 
+# IntelliJ IDEA Files #
+
+*.iml
+*.ipr
+*.iws
+*.idea
+
+# Build Files #
+
+bin
+target
+
+# Spring Bootstrap artifacts
+
+dependency-reduced-pom.xml
+out
+README.html
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
