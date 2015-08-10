@@ -10,15 +10,20 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
-	@Override
-	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/game");
-		config.setApplicationDestinationPrefixes("/sudoku");
-	}
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic");
+        /*
+         * The "/app" prefix is arbitrary. You can pick any prefix. It’s simply
+         * meant to differentiate messages to be routed to message-handling methods to do application work vs
+         * messages to be routed to the broker to broadcast to subscribed clients.
+         */
+        config.setApplicationDestinationPrefixes("/app");
+    }
 
-	@Override
-	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/solve").withSockJS();
-	}
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/sockjsendpoint").withSockJS();
+    }
 
 }

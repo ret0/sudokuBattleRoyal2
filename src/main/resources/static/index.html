@@ -15,12 +15,12 @@
         }
 
         function connect() {
-            var socket = new SockJS('/solve');
+            var socket = new SockJS('/sockjsendpoint');
             sudokuClient = Stomp.over(socket);
-            sudokuClient.connect({}, function(frame) {
+            sudokuClient.connect({}, function (frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                sudokuClient.subscribe('/game/board', function(board){
+                sudokuClient.subscribe('/topic/game/board', function (board) {
                     updateBoard(JSON.parse(board.body).content);
                 });
             });
@@ -36,7 +36,7 @@
 
         function sendName() {
             var name = document.getElementById('name').value;
-            sudokuClient.send("/sudoku/solve", {}, JSON.stringify({ 'name': name }));
+            sudokuClient.send("/app/solve", {}, JSON.stringify({'name': name}));
         }
 
         function updateBoard(message) {
