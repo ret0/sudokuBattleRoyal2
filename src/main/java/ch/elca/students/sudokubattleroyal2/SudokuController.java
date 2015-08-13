@@ -1,5 +1,7 @@
 package ch.elca.students.sudokubattleroyal2;
 
+import ch.elca.students.sudokubattleroyal2.model.GameUpdate;
+import ch.elca.students.sudokubattleroyal2.model.GameWelcome;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -12,11 +14,25 @@ public class SudokuController {
      * for one field.
      */
     @MessageMapping("/solve")
-    @SendTo("/topic/game/board")
-    public Board solve(SolveMessage message) throws Exception {
+    @SendTo("/topic/gameupdate")
+    public GameUpdate solve(SolveMessage message) throws Exception {
         Thread.sleep(1000); // simulated delay
-        return new Board("Hello, " + message.getName() + "!");
+        return new GameUpdate("player", 2, 0,0,9,false);
     }
+
+    @MessageMapping("/join")
+    public GameWelcome join(String playerId) throws Exception {
+        return new GameWelcome(true);
+    }
+
+
+
+
+
+
+
+
+
 
 
 }
