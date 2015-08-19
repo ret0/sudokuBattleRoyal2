@@ -1,4 +1,4 @@
-package ch.elca.students.sudokubattleroyal2;
+package ch.elca.students.sudokubattleroyal2.model;
 
 public class SolveMessage {
 

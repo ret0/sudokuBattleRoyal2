@@ -1,4 +1,4 @@
-package ch.elca.students.sudokubattleroyal2;
+package ch.elca.students.sudokubattleroyal2.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
