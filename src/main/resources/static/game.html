@@ -2,47 +2,36 @@
 <html>
 <head>
     <title>Hello WebSocket</title>
-    <script src="sockjs-0.3.4.js"></script>
-    <script src="stomp.js"></script>
+    <script src="js/sockjs-0.3.4.js"></script>
+    <script src="js/stomp.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript">
-        var sudokuClient = null;
 
-        function setConnected(connected) {
-            document.getElementById('connect').disabled = connected;
-            document.getElementById('disconnect').disabled = !connected;
-            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
-            document.getElementById('response').innerHTML = '';
-        }
+        var sudokuSocket = Stomp.over(new SockJS('/sockjsendpoint'));
 
-        function connect() {
-            var socket = new SockJS('/sockjsendpoint');
-            sudokuClient = Stomp.over(socket);
-            sudokuClient.connect({}, function (frame) {
-                setConnected(true);
-                console.log('Connected: ' + frame);
-                sudokuClient.subscribe('/topic/game/board', function (board) {
-                    updateBoard(JSON.parse(board.body).content);
-                });
-                sudokuClient.subscribe('/topic/game.login', function (message) {
-                    console.log(message);
-                });
-                sudokuClient.subscribe('/app/game.players', function (message) {
-                    console.log(message);
-                });
+        sudokuSocket.connect({},function(frame) {
+
+            var username = frame.headers['user-name'];
+
+            console.log('Connected: ' + frame);
+            sudokuSocket.subscribe('/topic/game/board', function (board) {
+                updateBoard(JSON.parse(board.body).content);
             });
-        }
+            sudokuSocket.subscribe('/topic/game.login', function (message) {
+                console.log(message);
+            });
+            sudokuSocket.subscribe('/app/game.players', function (message) {
+                updateConnectedPlayers(JSON.parse(message.body));
+            });
+        }, function(error) {
+            console.error('Error:' + error);
+        });
 
-        function disconnect() {
-            if (sudokuClient != null) {
-                sudokuClient.disconnect();
-            }
-            setConnected(false);
-            console.log("Disconnected");
-        }
-
-        function sendName() {
-            var name = document.getElementById('name').value;
-            sudokuClient.send("/app/solve", {}, JSON.stringify({'name': name}));
+        function updateConnectedPlayers(players) {
+            $('#playerList').empty();
+            players.forEach(function(player) {
+                $('#playerList').append($('<li>' + player.playerName + '</li>'));
+            });
         }
 
         function updateBoard(message) {
@@ -55,17 +44,16 @@
     </script>
 </head>
 
-<body onload="disconnect()">
+<body>
 
 <div>
     <div>
-        <button id="connect" onclick="connect();">Connect</button>
-        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
-    </div>
-    <div id="conversationDiv">
-        <label>What is your name?</label><input type="text" id="name"/>
-        <button id="sendName" onclick="sendName();">Send</button>
-        <p id="response"></p>
+        <h2>Connected Players</h2>
+        <div id="players">
+            <ul id="playerList">
+
+            </ul>
+        </div>
     </div>
 </div>
 
