@@ -12,7 +12,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/topic", "/queue");
         /*
          * The "/app" prefix is arbitrary. You can pick any prefix. It’s simply
          * meant to differentiate messages to be routed to message-handling methods to do application work vs

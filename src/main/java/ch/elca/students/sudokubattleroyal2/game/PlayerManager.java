@@ -1,4 +1,4 @@
-package ch.elca.students.sudokubattleroyal2.event;
+package ch.elca.students.sudokubattleroyal2.game;
 
 import ch.elca.students.sudokubattleroyal2.model.Player;
 import ch.elca.students.sudokubattleroyal2.persistence.PlayerRepository;

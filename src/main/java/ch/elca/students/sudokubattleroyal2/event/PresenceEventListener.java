@@ -1,5 +1,6 @@
 package ch.elca.students.sudokubattleroyal2.event;
 
+import ch.elca.students.sudokubattleroyal2.game.PlayerManager;
 import ch.elca.students.sudokubattleroyal2.model.Player;
 import ch.elca.students.sudokubattleroyal2.model.PlayerConnectedEvent;
 import org.springframework.context.ApplicationEvent;

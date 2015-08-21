@@ -1,6 +1,6 @@
 package ch.elca.students.sudokubattleroyal2.config;
 
-import ch.elca.students.sudokubattleroyal2.event.PlayerManager;
+import ch.elca.students.sudokubattleroyal2.game.PlayerManager;
 import ch.elca.students.sudokubattleroyal2.event.PresenceEventListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ public class GameConfig {
         private Destinations() {
         }
 
-        private static final String LOGIN = "/topic/game.login";
+        private static final String LOGIN = "/topic/game/login";
         //private static final String LOGOUT = "/topic/chat.logout";
     }
 
