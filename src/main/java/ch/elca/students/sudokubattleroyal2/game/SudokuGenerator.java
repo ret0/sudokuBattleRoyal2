@@ -22,11 +22,19 @@ public class SudokuGenerator {
     }
 
     public static int[][] createGame(int difficulty, int[][] solution) {
-        return makeHoles(difficulty,solution);
+    	int[][] game = copyArray(solution);
+        return makeHoles(difficulty,game);
     }
 
 
-    /**
+    private static int[][] copyArray(int[][] array) {
+    	int[][] copy = Arrays.stream(array)
+                .map((int[] row) -> row.clone())
+                .toArray((int length) -> new int[length][]);
+    	return copy;
+	}
+
+	/**
      * Recursive method that attempts to place every number in a cell.
      *
      * @param x x value of the current cell

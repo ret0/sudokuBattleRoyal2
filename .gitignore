@@ -7,6 +7,12 @@
 *.iws
 *.idea
 
+# Eclipse Files #
+.settings
+.metadata
+.classpath
+.project
+
 # Build Files #
 
 bin
