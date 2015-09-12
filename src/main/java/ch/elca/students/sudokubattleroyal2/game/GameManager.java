@@ -8,10 +8,11 @@ public class GameManager {
 
     private Game game;
 
-    public void createAndStart() {
+    public Game createAndStart() {
         int[][] solution = SudokuGenerator.createSolution();
         int[][] initialBoardState = SudokuGenerator.createGame(35,solution);
         game = new Game(solution, initialBoardState);
+        return game;
 
     }
 

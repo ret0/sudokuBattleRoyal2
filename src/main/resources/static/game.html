@@ -21,6 +21,9 @@
             sudokuSocket.subscribe('/app/game/players', function (message) {
                 updateConnectedPlayers(JSON.parse(message.body));
             });
+            sudokuSocket.subscribe('/topic/game/start', function (message) {
+                initBoard(JSON.parse(message.body));
+            });
             sudokuSocket.subscribe('/topic/game/update', function (message) {
                 console.log(message);
             });
@@ -32,8 +35,22 @@
             console.error('Error:' + error);
         });
 
+        function initBoard(board) {
+            for (var x = 0; x < board.length; x++) {
+                for (var y = 0; y < board[0].length; y++) {
+                    if (board[x][y] != 0) {
+                        setBoardValue(x, y, board[x][y]);
+                    }
+                }
+            }
+        }
+
         function update(gameUpdate) {
-            $('input[data-x=' + gameUpdate.x + '][data-y=' + gameUpdate.y + ']')[0].value = gameUpdate.value;
+            setBoardValue(gameUpdate.x,gameUpdate.y,gameUpdate.value);
+        }
+
+        function setBoardValue(x, y, value) {
+            $('input[data-x=' + x + '][data-y=' + y + ']')[0].value = value;
         }
 
         function updateConnectedPlayers(players) {
@@ -79,92 +96,92 @@
                 <td> <input type="number" min="1" max="9" data-x="8" data-y="0" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" data-x="0" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="1" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="2" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="3" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="4" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="5" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="6" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="7" data-y="1"/> </td>
-                <td> <input type="number" min="1" max="9" data-x="8" data-y="1"/> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="1" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="1" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="2" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="2" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="3" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="3" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="4" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="4" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="5" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="5" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="6" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="6" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="7" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="7" /> </td>
             </tr>
             <tr>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
-                <td> <input type="number" min="1" max="9" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="0" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="1" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="2" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="3" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="4" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="5" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="6" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="7" data-y="8" /> </td>
+                <td> <input type="number" min="1" max="9" data-x="8" data-y="8" /> </td>
             </tr>
         </table>
     </div>
