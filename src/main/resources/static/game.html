@@ -61,11 +61,13 @@
         }
 
         function setupInputHandler() {
-            $('input').on('input', function (element, a, b) {
+            $('input').on('input', function (element) {
                 if (this.value.length > 1) {
                     this.value = this.value.slice(0,1);
                 }
-                sudokuSocket.send("/app/solve", {}, JSON.stringify({x: 0, y: 0, value: this.value}));
+                var x = $(this).attr("data-x");
+                var y = $(this).attr("data-y");
+                sudokuSocket.send("/app/solve", {}, JSON.stringify({x: x, y: y, value: this.value}));
             });
         }
     </script>

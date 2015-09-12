@@ -1,13 +1,7 @@
 package ch.elca.students.sudokubattleroyal2.game;
 
-
-import ch.elca.students.sudokubattleroyal2.model.Player;
-
-import java.util.List;
-
 public class Game {
 
-    private List<Player> joinedPlayer;
     private int[][] solution;
     private int[][] game;
 
@@ -15,9 +9,9 @@ public class Game {
         this.solution = solution;
         this.game = game;
     }
-    
+
     public int[][] getGameBoard() {
-    	return this.game;
+        return this.game;
     }
 
     public synchronized Answer solve(int x, int y, int value) {
@@ -35,7 +29,7 @@ public class Game {
 
     private boolean isFinished() {
         for (int i = 0; i < game.length; i++) {
-            for (int j = 0; j < game[0].length; j++ ) {
+            for (int j = 0; j < game[0].length; j++) {
                 if (game[i][j] == 0) {
                     return false;
                 }
