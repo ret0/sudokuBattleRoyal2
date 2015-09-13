@@ -6,6 +6,7 @@
     <script src="js/sockjs-0.3.4.js"></script>
     <script src="js/stomp.js"></script>
     <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery.transit.min.js"></script>
     <script type="text/javascript">
 
         var sudokuSocket = Stomp.over(new SockJS('/sockjsendpoint'));
@@ -29,7 +30,7 @@
             });
             sudokuSocket.subscribe('/user/queue/attempt', function (message) {
                 console.log(message);
-                update(JSON.parse(message.body));
+                updateAttempt(JSON.parse(message.body));
             });
         }, function(error) {
             console.error('Error:' + error);
@@ -39,18 +40,30 @@
             for (var x = 0; x < board.length; x++) {
                 for (var y = 0; y < board[0].length; y++) {
                     if (board[x][y] != 0) {
-                        setBoardValue(x, y, board[x][y]);
+                        setFieldValue(x, y, board[x][y]);
                     }
                 }
             }
         }
 
-        function update(gameUpdate) {
-            setBoardValue(gameUpdate.x,gameUpdate.y,gameUpdate.value);
+        function updateAttempt(gameUpdate) {
+            var fieldInput = getFieldInput(gameUpdate.x, gameUpdate.y);
+            setValueOnField(fieldInput, gameUpdate.value);
+            $(fieldInput).transition({"background-color": "green"})
+            			.transition({"background-color": "white"});
+            
         }
 
-        function setBoardValue(x, y, value) {
-            $('input[data-x=' + x + '][data-y=' + y + ']')[0].value = value;
+        function getFieldInput(x, y) {
+			return $('input[data-x=' + x + '][data-y=' + y + ']')[0];
+        }
+
+        function setFieldValue(x, y, value) {
+            getFieldInput(x,y).value = value;
+        }
+
+        function setValueOnField(fieldInput, value) {
+            fieldInput.value = value;
         }
 
         function updateConnectedPlayers(players) {
