@@ -1,4 +1,8 @@
 
+body {
+  padding-top: 40px;
+}
+
 /* Board related styling */
 table {
     margin:1em auto;
