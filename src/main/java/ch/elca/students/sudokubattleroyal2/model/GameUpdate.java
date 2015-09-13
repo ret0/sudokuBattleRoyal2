@@ -1,27 +1,30 @@
 package ch.elca.students.sudokubattleroyal2.model;
 
+import ch.elca.students.sudokubattleroyal2.game.Answer;
+
 /**
  * Created by mkf on 13.08.2015.
  */
 public class GameUpdate {
 
     private String playerId;
+    private Answer update;
     private int scoreDelta;
     private int x;
     private int y;
     private int value;
-    private boolean gameOver;
 
     public GameUpdate() {
     }
 
-    public GameUpdate(String playerId, int scoreDelta, int x, int y, int value, boolean gameOver) {
+    public GameUpdate(String playerId, Answer update, int scoreDelta, int x,
+            int y, int value) {
         this.playerId = playerId;
+        this.update = update;
         this.scoreDelta = scoreDelta;
         this.x = x;
         this.y = y;
         this.value = value;
-        this.gameOver = gameOver;
     }
 
     public String getPlayerId() {
@@ -30,6 +33,21 @@ public class GameUpdate {
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    /**
+     * @return the update
+     */
+    public Answer getUpdate() {
+        return update;
+    }
+
+    /**
+     * @param update
+     *            the update to set
+     */
+    public void setUpdate(Answer update) {
+        this.update = update;
     }
 
     public int getScoreDelta() {
@@ -62,13 +80,5 @@ public class GameUpdate {
 
     public void setValue(int value) {
         this.value = value;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
     }
 }

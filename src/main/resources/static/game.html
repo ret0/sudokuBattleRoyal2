@@ -39,19 +39,23 @@
         function initBoard(board) {
             for (var x = 0; x < board.length; x++) {
                 for (var y = 0; y < board[0].length; y++) {
-                    if (board[x][y] != 0) {
-                        setFieldValue(x, y, board[x][y]);
-                    }
+                    setFieldValue(x, y, board[x][y]);
                 }
             }
         }
 
         function updateAttempt(gameUpdate) {
             var fieldInput = getFieldInput(gameUpdate.x, gameUpdate.y);
-            setValueOnField(fieldInput, gameUpdate.value);
-            $(fieldInput).transition({"background-color": "green"})
-            			.transition({"background-color": "white"});
-            
+            if (gameUpdate.update === "CORRECT" || gameUpdate.update === "FINISHED") {
+                setValueOnField(fieldInput, gameUpdate.value);
+                correctAnimationOnField(fieldInput); 
+            } else if (gameUpdate.update === "WRONG") {
+                setValueOnField(fieldInput, 0);
+                wrongAnimationOnField(fieldInput); 
+            } else if (gameUpdate.update == "TOO_LATE") {
+                setValueOnField(fieldInput, 0);
+                tooLateAnimationOnField(fieldInput);
+            }  
         }
 
         function getFieldInput(x, y) {
@@ -59,11 +63,15 @@
         }
 
         function setFieldValue(x, y, value) {
-            getFieldInput(x,y).value = value;
+            setValueOnField(getFieldInput(x,y), value);
         }
 
         function setValueOnField(fieldInput, value) {
-            fieldInput.value = value;
+            if (value === 0) {
+                fieldInput.value = "";
+            } else {
+            	fieldInput.value = value;
+            }
         }
 
         function updateConnectedPlayers(players) {
@@ -71,6 +79,20 @@
             players.forEach(function(player) {
                 $('#playerList').append($('<li>' + player.playerName + '</li>'));
             });
+        }
+
+        function correctAnimationOnField(fieldInput) {
+            $(fieldInput).transition({"background-color": "green"});
+        }
+
+        function wrongAnimationOnField(fieldInput) {
+            $(fieldInput).transition({"background-color": "red"})
+			.transition({"background-color": "white"});
+        }
+
+        function tooLateAnimationOnField(fieldInput) {
+            $(fieldInput).transition({"background-color": "blue"})
+			.transition({"background-color": "white"});
         }
 
         function setupInputHandler() {
