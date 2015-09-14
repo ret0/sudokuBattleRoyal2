@@ -38,13 +38,15 @@ function updateAttempt(gameUpdate) {
     if (gameUpdate.update === "CORRECT" || gameUpdate.update === "FINISHED") {
         setValueOnField(fieldInput, gameUpdate.value);
         correctAnimationOnField(fieldInput); 
+        updateScoring(gameUpdate.playerName, gameUpdate.scoreDelta);
     } else if (gameUpdate.update === "WRONG") {
         setValueOnField(fieldInput, 0);
         wrongAnimationOnField(fieldInput); 
+        updateScoring(gameUpdate.playerName, gameUpdate.scoreDelta);
     } else if (gameUpdate.update == "TOO_LATE") {
         setValueOnField(fieldInput, 0);
         tooLateAnimationOnField(fieldInput);
-    }  
+    }
 }
 
 function getFieldInput(x, y) {
@@ -64,10 +66,11 @@ function setValueOnField(fieldInput, value) {
 }
 
 function updateConnectedPlayers(players) {
-    $('#playerList').empty();
-    players.forEach(function(player) {
-        $('#playerList').append($('<li>' + player.playerName + '</li>'));
-    });
+    ranking.players = players;
+}
+
+function updateScoring(playerName, scoreDelta) {
+    _.find(ranking.players, { 'playerName': playerName }).score += scoreDelta;
 }
 
 function correctAnimationOnField(fieldInput) {
@@ -92,5 +95,14 @@ function setupInputHandler() {
         var x = $(this).attr("data-x");
         var y = $(this).attr("data-y");
         sudokuSocket.send("/app/solve", {}, JSON.stringify({x: x, y: y, value: this.value}));
+    });
+}
+var ranking;
+function setupComponents() {
+    ranking = new Vue({
+        el: '#ranking',
+        data: {
+          players: []
+        }
     });
 }

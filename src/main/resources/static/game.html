@@ -8,10 +8,12 @@
     <script src="js/stomp.js"></script>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery.transit.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/lodash.min.js"></script>
     <script src="js/sudokuBattle.js"></script>
 </head>
 
-<body onload="setupInputHandler();">
+<body onload="setupInputHandler();setupComponents();">
 
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -23,12 +25,20 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4">
-		        <h2>Ranking</h2>
-		        <div id="players">
-		            <ul id="playerList">
-		
-		            </ul>
-		        </div>
+				<div class="panel panel-default">
+					<!-- Default panel contents -->
+					<div class="panel-heading">
+						<h3 class="panel-title">Ranking</h3>
+					</div>
+					
+					<!-- List group -->
+					<ul id="ranking"class="list-group">
+						<li v-repeat="player in players" class="list-group-item">
+							{{player.playerName}}
+							<span class="badge">{{player.score}}</span> 
+						</li>
+					</ul>
+				</div>
 	        </div>
 	        <div class="col-md-4">
 		        <h2>Game</h2>
