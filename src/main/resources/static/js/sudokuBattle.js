@@ -7,17 +7,23 @@ sudokuSocket.connect({},function(frame) {
     console.log('Connected: ' + frame);
     sudokuSocket.subscribe('/topic/game/login', function (message) {
         console.log(message);
-        addConnectedPlayer(JSON.parse(message.body));
+        var playerConnectedEvent = JSON.parse(message.body)
+        addConnectedPlayer(playerConnectedEvent);
+        addActionLog({playerName: playerConnectedEvent.username, update: "JOINED", text: "Joined"});
     });
     sudokuSocket.subscribe('/app/game/players', function (message) {
         updateConnectedPlayers(JSON.parse(message.body));
+        addActionLog({playerName: username, update: "REGISTERED", text: "Registered"});
     });
     sudokuSocket.subscribe('/topic/game/start', function (message) {
         initBoard(JSON.parse(message.body));
+        addActionLog({playerName: "Application", update: "STARTED", text: "Game Started"});
     });
     sudokuSocket.subscribe('/topic/game/update', function (message) {
         console.log(message);
-        update(JSON.parse(message.body));
+        var gameUpdate = JSON.parse(message.body)
+        update(gameUpdate);
+        addActionLog({playerName: gameUpdate.playerName, update: gameUpdate.update, text: "Scored: " + gameUpdate.scoreDelta});
     });
     sudokuSocket.subscribe('/user/queue/attempt', function (message) {
         console.log(message);
@@ -84,6 +90,10 @@ function updateScoring(playerName, scoreDelta) {
     ranking.players.sort(function(player1, player2){return player2.score - player1.score});
 }
 
+function addActionLog(message) {
+    actionLog.actionLogMessages.unshift(message);
+}
+
 function correctAnimationOnField(fieldInput) {
     $(fieldInput).transition({"background-color": "green"});
 }
@@ -109,11 +119,30 @@ function setupInputHandler() {
     });
 }
 var ranking;
+var actionLog
 function setupComponents() {
     ranking = new Vue({
         el: '#ranking',
         data: {
           players: []
+        }
+    });
+    actionLog = new Vue({
+        el: '#actionLog',
+        data: {
+            actionLogMessages: [],
+            isCorrect: function (update) {
+                return update === "CORRECT";
+            },
+            isTooLate: function (update) {
+                return update === "TOO_LATE";
+            },
+            isWrong: function (update) {
+                return update === "WRONG";
+            },
+            isActionLog: function () {
+                return true;
+            }
         }
     });
 }
