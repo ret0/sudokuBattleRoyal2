@@ -81,6 +81,7 @@ function addConnectedPlayer(playerConnectedEvent) {
 
 function updateScoring(playerName, scoreDelta) {
     _.find(ranking.players, { 'playerName': playerName }).score += scoreDelta;
+    ranking.players.sort(function(player1, player2){return player2.score - player1.score});
 }
 
 function correctAnimationOnField(fieldInput) {
