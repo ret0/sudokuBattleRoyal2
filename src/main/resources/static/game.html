@@ -33,9 +33,9 @@
 					
 					<!-- List group -->
 					<ul id="ranking"class="list-group">
-						<li v-repeat="player in players" class="list-group-item">
+						<li v-repeat="player in players | orderBy score reverse" class="list-group-item">
 							{{player.playerName}}
-							<span class="badge">{{player.score}}</span> 
+							<span class="badge">{{player.score}} {{player.score | pluralize ' Pkt.' ' Pkt.'}}</span>
 						</li>
 					</ul>
 				</div>
