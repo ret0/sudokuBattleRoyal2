@@ -147,7 +147,17 @@
     			</div>
 	        </div>
 	        <div class="col-md-4">
-		        <h2>Action Log</h2>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Action Log</h3>
+                    </div>
+                    <div id="actionLog" class="action-log-container">
+                        <template v-repeat="message in actionLogMessages">
+                            <p v-class="green: isCorrect(message.update), red: isWrong(message.update), blue: isTooLate(message.update), action-log: isActionLog">
+                                {{message.playerName}}: {{message.text}}</p>
+                        </template>
+                    </div>
+                </div>
 	        </div>
 	     </div>
     </div>
