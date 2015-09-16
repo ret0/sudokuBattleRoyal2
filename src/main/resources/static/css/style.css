@@ -1,5 +1,12 @@
+
+body {
+  padding-top: 40px;
+}
+
+/* Board related styling */
 table {
     margin:1em auto;
+    border-spacing: 0px;
 }
 td {
     height:30px;
@@ -8,14 +15,31 @@ td {
     text-align:center;
 }
 td:first-child {
-    border-left:solid;
+    border-left:solid thick;
 }
 td:nth-child(3n) {
-    border-right:solid ;
+    border-right:solid thick;
 }
 tr:first-child {
-    border-top:solid;
+    border-top:solid thick;
 }
 tr:nth-child(3n) td {
-    border-bottom:solid ;
+    border-bottom:solid thick;
+}
+
+input[type="number"] {
+	width: 100%; 
+	height: 100%;
+	box-sizing: border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing: border-box;
+	border: 0px solid;
+	font-size: large;
+	text-align: center;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+	-webkit-appearance: none; 
+	margin: 0; 
 }

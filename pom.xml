@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>18.0</version>
+            <version>${version.guava}</version>
         </dependency>
 
         <dependency>
@@ -48,10 +48,19 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
+        
+        <!-- Test dependency -->
+        <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 
     <properties>
         <java.version>1.8</java.version>
+        <version.guava>18.0</version.guava>
+    	<version.junit>4.11</version.junit>
     </properties>
 
     <build>
