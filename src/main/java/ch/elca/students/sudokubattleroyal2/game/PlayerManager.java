@@ -15,4 +15,8 @@ public class PlayerManager {
     public void add(Player player) {
         playerRepository.save(player);
     }
+
+    public boolean playerIsNew(String playerName) {
+        return playerRepository.findByPlayerName(playerName).isEmpty();
+    }
 }
