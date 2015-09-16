@@ -119,7 +119,8 @@ function setupInputHandler() {
     });
 }
 var ranking;
-var actionLog
+var actionLog;
+var sudoku;
 function setupComponents() {
     ranking = new Vue({
         el: '#ranking',
@@ -145,4 +146,36 @@ function setupComponents() {
             }
         }
     });
+    sudoku = new Vue({
+        el: '#sudoku',
+        x: 0,
+        y: 0,
+        ready: function() {
+            var self = this;
+            $(this.$el).on("focus", "input", function(event) {
+                self.x = $(this).attr("data-x");
+                self.y = $(this).attr("data-y");
+            });
+            $(this.$el).on("keydown", "input", function(e) {
+                if (e.keyCode == '37') {
+                    e.preventDefault();
+                    self.x = (self.x - 1) % 9;
+                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                } else if (e.keyCode == '38') {
+                    e.preventDefault();
+                    self.y = (self.y - 1) % 9;
+                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                } else if (e.keyCode == '39') {
+                    e.preventDefault();
+                    self.x = (self.x + 1) % 9;
+                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                } else if (e.keyCode == '40') {
+                    e.preventDefault();
+                    self.y = (self.y + 1) % 9;
+                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                }
+            });
+        }
+    });
+    
 }
