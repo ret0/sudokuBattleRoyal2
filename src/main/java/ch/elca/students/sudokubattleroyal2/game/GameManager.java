@@ -28,7 +28,6 @@ public class GameManager {
         int[][] initialBoardState = SudokuGenerator.createGame(35, solution);
         game = new Game(solution, initialBoardState);
         return game;
-
     }
 
     public GameUpdate solve(String playerName, int x, int y, int value) {

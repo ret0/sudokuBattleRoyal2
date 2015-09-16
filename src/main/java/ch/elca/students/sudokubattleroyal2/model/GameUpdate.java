@@ -7,7 +7,7 @@ import ch.elca.students.sudokubattleroyal2.game.Answer;
  */
 public class GameUpdate {
 
-    private String playerId;
+    private String playerName;
     private Answer update;
     private int scoreDelta;
     private int x;
@@ -17,9 +17,9 @@ public class GameUpdate {
     public GameUpdate() {
     }
 
-    public GameUpdate(String playerId, Answer update, int scoreDelta, int x,
+    public GameUpdate(String playerName, Answer update, int scoreDelta, int x,
             int y, int value) {
-        this.playerId = playerId;
+        this.playerName = playerName;
         this.update = update;
         this.scoreDelta = scoreDelta;
         this.x = x;
@@ -27,12 +27,12 @@ public class GameUpdate {
         this.value = value;
     }
 
-    public String getPlayerId() {
-        return playerId;
+    public String getPlayerName() {
+        return playerName;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 
     /**

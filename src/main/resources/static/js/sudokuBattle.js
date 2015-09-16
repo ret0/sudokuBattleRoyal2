@@ -7,6 +7,7 @@ sudokuSocket.connect({},function(frame) {
     console.log('Connected: ' + frame);
     sudokuSocket.subscribe('/topic/game/login', function (message) {
         console.log(message);
+        addConnectedPlayer(JSON.parse(message.body));
     });
     sudokuSocket.subscribe('/app/game/players', function (message) {
         updateConnectedPlayers(JSON.parse(message.body));
@@ -16,6 +17,7 @@ sudokuSocket.connect({},function(frame) {
     });
     sudokuSocket.subscribe('/topic/game/update', function (message) {
         console.log(message);
+        update(JSON.parse(message.body));
     });
     sudokuSocket.subscribe('/user/queue/attempt', function (message) {
         console.log(message);
@@ -33,18 +35,24 @@ function initBoard(board) {
     }
 }
 
+function update(gameUpdate) {
+    updateScoring(gameUpdate.playerName, gameUpdate.scoreDelta);
+    if (gameUpdate.update === "CORRECT" || gameUpdate.update === "FINISHED") {
+        setFieldValue(gameUpdate.x, gameUpdate.y, gameUpdate.value);
+    }
+}
+
 function updateAttempt(gameUpdate) {
     var fieldInput = getFieldInput(gameUpdate.x, gameUpdate.y);
     if (gameUpdate.update === "CORRECT" || gameUpdate.update === "FINISHED") {
-        setValueOnField(fieldInput, gameUpdate.value);
-        correctAnimationOnField(fieldInput); 
+        setValueOnField(fieldInput, gameUpdate.value); //we set value again to assure sync with animation
+        correctAnimationOnField(fieldInput);
     } else if (gameUpdate.update === "WRONG") {
         setValueOnField(fieldInput, 0);
-        wrongAnimationOnField(fieldInput); 
+        wrongAnimationOnField(fieldInput);
     } else if (gameUpdate.update == "TOO_LATE") {
-        setValueOnField(fieldInput, 0);
         tooLateAnimationOnField(fieldInput);
-    }  
+    }
 }
 
 function getFieldInput(x, y) {
@@ -64,10 +72,16 @@ function setValueOnField(fieldInput, value) {
 }
 
 function updateConnectedPlayers(players) {
-    $('#playerList').empty();
-    players.forEach(function(player) {
-        $('#playerList').append($('<li>' + player.playerName + '</li>'));
-    });
+    ranking.players = players;
+}
+
+function addConnectedPlayer(playerConnectedEvent) {
+    ranking.players.unshift({playerName: playerConnectedEvent.username, score : 0});
+}
+
+function updateScoring(playerName, scoreDelta) {
+    _.find(ranking.players, { 'playerName': playerName }).score += scoreDelta;
+    ranking.players.sort(function(player1, player2){return player2.score - player1.score});
 }
 
 function correctAnimationOnField(fieldInput) {
@@ -92,5 +106,14 @@ function setupInputHandler() {
         var x = $(this).attr("data-x");
         var y = $(this).attr("data-y");
         sudokuSocket.send("/app/solve", {}, JSON.stringify({x: x, y: y, value: this.value}));
+    });
+}
+var ranking;
+function setupComponents() {
+    ranking = new Vue({
+        el: '#ranking',
+        data: {
+          players: []
+        }
     });
 }
