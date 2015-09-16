@@ -28,10 +28,9 @@ public class SudokuGenerator {
 
 
     private static int[][] copyArray(int[][] array) {
-    	int[][] copy = Arrays.stream(array)
+        return Arrays.stream(array)
                 .map((int[] row) -> row.clone())
                 .toArray((int length) -> new int[length][]);
-    	return copy;
 	}
 
 	/**
