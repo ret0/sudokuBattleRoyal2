@@ -43,3 +43,24 @@ input[type=number]::-webkit-outer-spin-button {
 	-webkit-appearance: none; 
 	margin: 0; 
 }
+.action-log {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    margin: 0 0 0 0;
+}
+
+.action-log-container {
+    max-height: 500px;
+    overflow: auto;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: blue;
+}
+
+.green {
+    color: green;
+}
