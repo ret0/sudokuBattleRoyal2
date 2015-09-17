@@ -25,7 +25,7 @@ public class GameManager {
     private static final Integer WRONG_SCORE = -2;
     private static final Integer TOO_LATE_SCORE = 0;
 
-    private static final int NUMBER_OF_BLANK_FIELDS = 1;
+    private static final int NUMBER_OF_BLANK_FIELDS = 40;
 
     private static final Map<Answer, Integer> SCORE_MAPPING = ImmutableMap
             .<Answer, Integer>builder().put(Answer.CORRECT, CORRECT_SCORE)
