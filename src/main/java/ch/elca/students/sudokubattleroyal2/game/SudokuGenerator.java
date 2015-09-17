@@ -1,6 +1,7 @@
 package ch.elca.students.sudokubattleroyal2.game;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 
 /**
  * The SudokuGenerator class creates a random standard (9x9)
@@ -13,8 +14,8 @@ public class SudokuGenerator {
 
 
     /**
-      * @return board, a partially completed 9x9 Sudoku board
-      */
+     * @return board, a partially completed 9x9 Sudoku board
+     */
     public static int[][] createSolution() {
         int[][] board = new int[BOARD_WIDTH][BOARD_HEIGHT];
         nextCell(0, 0, board);
@@ -22,8 +23,8 @@ public class SudokuGenerator {
     }
 
     public static int[][] createGame(int difficulty, int[][] solution) {
-    	int[][] game = copyArray(solution);
-        return makeHoles(difficulty,game);
+        int[][] game = copyArray(solution);
+        return makeHoles(difficulty, game);
     }
 
 
@@ -31,13 +32,13 @@ public class SudokuGenerator {
         return Arrays.stream(array)
                 .map((int[] row) -> row.clone())
                 .toArray((int length) -> new int[length][]);
-	}
+    }
 
-	/**
+    /**
      * Recursive method that attempts to place every number in a cell.
      *
-     * @param x x value of the current cell
-     * @param y y value of the current cell
+     * @param x     x value of the current cell
+     * @param y     y value of the current cell
      * @param board
      * @return true if the board completed legally, false if this cell
      * has no legal solutions.
@@ -126,7 +127,7 @@ public class SudokuGenerator {
      */
     private static int[][] makeHoles(int holesToMake, int[][] board) {
         /* We define difficulty as follows:
-			Easy: 32+ clues (49 or fewer holes)
+            Easy: 32+ clues (49 or fewer holes)
 			Medium: 27-31 clues (50-54 holes)
 			Hard: 26 or fewer clues (54+ holes)
 			This is human difficulty, not algorighmically (though there is some correlation)
@@ -149,6 +150,7 @@ public class SudokuGenerator {
 
     /**
      * Prints a representation of board on stdout
+     *
      * @param board
      */
     public static void print(int[][] board) {
@@ -160,12 +162,11 @@ public class SudokuGenerator {
         System.out.println();
     }
 
-    public static void main(String[] args) {
-        int[][] board = createSolution();
-        print(board);
-        board = createGame(35, board);
-        print(board);
-    }
-
-//    private int operations;
+//    public static void main(String[] args) {
+//        int[][] board = createSolution();
+//        print(board);
+//        board = createGame(35, board);
+//        print(board);
+//    }
+    
 }
