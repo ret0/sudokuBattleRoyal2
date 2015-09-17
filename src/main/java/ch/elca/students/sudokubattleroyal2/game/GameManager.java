@@ -1,13 +1,18 @@
 package ch.elca.students.sudokubattleroyal2.game;
 
 import ch.elca.students.sudokubattleroyal2.model.GameUpdate;
+import ch.elca.students.sudokubattleroyal2.persistence.PlayerRepository;
 import com.google.common.collect.ImmutableMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
 public class GameManager {
+
+    @Autowired
+    private PlayerRepository playerRepository;
 
     private static final Integer CORRECT_SCORE = 10;
     private static final Integer WRONG_SCORE = -2;
@@ -36,5 +41,10 @@ public class GameManager {
 
     public boolean isGameStarted() {
         return game != null;
+    }
+
+    public void resetGameState() {
+        game = null;
+        playerRepository.deleteAllInBatch();
     }
 }
