@@ -14,7 +14,7 @@ public class Game {
         return this.game;
     }
 
-    public synchronized Answer solve(int x, int y, int value) {
+    public Answer solve(int x, int y, int value) {
         if (solution[x][y] == value && game[x][y] == 0) {
             game[x][y] = value;
             if (isFinished()) {
