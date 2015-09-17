@@ -72,8 +72,10 @@ function setFieldValue(x, y, value) {
 function setValueOnField(fieldInput, value) {
     if (value === 0) {
         fieldInput.value = "";
+        fieldInput.disabled = false;
     } else {
         fieldInput.value = value;
+        fieldInput.disabled = true;
     }
 }
 
@@ -147,11 +149,13 @@ function setupComponents() {
         }
     });
     sudoku = new Vue({
+        self: this,
         el: '#sudoku',
         x: 0,
         y: 0,
         ready: function() {
             var self = this;
+            $(this.$el).find("input").prop('disabled', true);
             $(this.$el).on("focus", "input", function(event) {
                 self.x = $(this).attr("data-x");
                 self.y = $(this).attr("data-y");
@@ -159,23 +163,44 @@ function setupComponents() {
             $(this.$el).on("keydown", "input", function(e) {
                 if (e.keyCode == '37') {
                     e.preventDefault();
-                    self.x = (self.x - 1) % 9;
-                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                    self.focusNextEnabledField(function(x, y) {
+                        x = (((x - 1) % 9) + 9) % 9;
+                        return {x :x, y: y};
+                    });
                 } else if (e.keyCode == '38') {
                     e.preventDefault();
-                    self.y = (self.y - 1) % 9;
-                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                    self.focusNextEnabledField(function(x, y) {
+                        y = (((y - 1) % 9) + 9) % 9;
+                        return {x :x, y: y};
+                    });
                 } else if (e.keyCode == '39') {
                     e.preventDefault();
-                    self.x = (self.x + 1) % 9;
-                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                    self.focusNextEnabledField(function(x, y) {
+                        x = (((x + 1) % 9) + 9) % 9;
+                        return {x :x, y: y};
+                    });
                 } else if (e.keyCode == '40') {
                     e.preventDefault();
-                    self.y = (self.y + 1) % 9;
-                    $('input[data-x=' + self.x + '][data-y=' + self.y + ']').focus();
+                    self.focusNextEnabledField(function(x, y) {
+                        y = (((y + 1) % 9) + 9) % 9;
+                        return {x :x, y: y};
+                    });
                 }
             });
+        },
+        methods: {
+            mod: function(n, m) {
+                return ((n % m) + m) % m;
+            },
+            focusNextEnabledField: function (move) {
+                var newField = move(this.x, this.y);
+                while ($('input[data-x=' + newField.x + '][data-y=' + newField.y + ']')[0].disabled == true) {
+                    newField = move(newField.x, newField.y);
+                }
+                this.x = newField.x;
+                this.y = newField.y;
+                $('input[data-x=' + this.x + '][data-y=' + this.y + ']').focus();
+            }
         }
     });
-    
 }
