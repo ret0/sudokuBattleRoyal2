@@ -5,6 +5,7 @@ sudokuSocket.connect({},function(frame) {
     var username = frame.headers['user-name'];
 
     console.log('Connected: ' + frame);
+
     sudokuSocket.subscribe('/topic/game/login', function (message) {
         console.log(message);
         var playerConnectedEvent = JSON.parse(message.body)
@@ -24,6 +25,9 @@ sudokuSocket.connect({},function(frame) {
         var gameUpdate = JSON.parse(message.body)
         update(gameUpdate);
         addActionLog({playerName: gameUpdate.playerName, update: gameUpdate.update, text: "Scored: " + gameUpdate.scoreDelta});
+        if(gameUpdate.update === "FINISHED") {
+            addActionLog({playerName: "Application", update: gameUpdate.update, text: "Game Over"});
+        }
     });
     sudokuSocket.subscribe('/user/queue/attempt', function (message) {
         console.log(message);
@@ -48,6 +52,11 @@ function update(gameUpdate) {
     }
 }
 
+function updateScoring(playerName, scoreDelta) {
+    _.find(ranking.players, { 'playerName': playerName }).score += scoreDelta;
+    ranking.players.sort(function(player1, player2){return player2.score - player1.score});
+}
+
 function updateAttempt(gameUpdate) {
     var fieldInput = getFieldInput(gameUpdate.x, gameUpdate.y);
     if (gameUpdate.update === "CORRECT" || gameUpdate.update === "FINISHED") {
@@ -56,7 +65,7 @@ function updateAttempt(gameUpdate) {
     } else if (gameUpdate.update === "WRONG") {
         setValueOnField(fieldInput, 0);
         wrongAnimationOnField(fieldInput);
-    } else if (gameUpdate.update == "TOO_LATE") {
+    } else if (gameUpdate.update === "TOO_LATE") {
         tooLateAnimationOnField(fieldInput);
     }
 }
@@ -85,11 +94,6 @@ function updateConnectedPlayers(players) {
 
 function addConnectedPlayer(playerConnectedEvent) {
     ranking.players.unshift({playerName: playerConnectedEvent.username, score : 0});
-}
-
-function updateScoring(playerName, scoreDelta) {
-    _.find(ranking.players, { 'playerName': playerName }).score += scoreDelta;
-    ranking.players.sort(function(player1, player2){return player2.score - player1.score});
 }
 
 function addActionLog(message) {
@@ -142,6 +146,9 @@ function setupComponents() {
             },
             isWrong: function (update) {
                 return update === "WRONG";
+            },
+            isFinished: function (update) {
+                return update === "FINISHED";
             },
             isActionLog: function () {
                 return true;

@@ -52,6 +52,7 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
 .action-log {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     margin: 0 0 0 0;
@@ -72,4 +73,8 @@ input[type=number] {
 
 .green {
     color: green;
+}
+
+.bold {
+    font-weight: bold;
 }
