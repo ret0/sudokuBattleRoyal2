@@ -68,4 +68,9 @@ public class GameManager {
     public boolean isGameStarted() {
         return game != null;
     }
+
+    public void resetGameState() {
+        game = null;
+        playerRepository.deleteAllInBatch();
+    }
 }

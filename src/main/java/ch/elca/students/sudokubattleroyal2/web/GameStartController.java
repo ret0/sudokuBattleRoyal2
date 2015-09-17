@@ -29,4 +29,10 @@ public class GameStartController {
                 game.getGameBoard());
         log.info("Game Started...");
     }
+
+    @RequestMapping("/admin/reset")
+    public void resetGame() {
+        gameManager.resetGameState();
+        log.info("Game Reset...");
+    }
 }
