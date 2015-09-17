@@ -17,6 +17,6 @@ public class PlayerManager {
     }
 
     public boolean playerIsNew(String playerName) {
-        return playerRepository.findByPlayerName(playerName).isEmpty();
+        return playerRepository.findOneByPlayerName(playerName) == null;
     }
 }
