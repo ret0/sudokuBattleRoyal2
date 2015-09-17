@@ -2,7 +2,7 @@ var sudokuSocket = Stomp.over(new SockJS('/sockjsendpoint'));
 
 sudokuSocket.connect({},function(frame) {
 
-    var username = frame.headers['user-name'];
+    ranking.username = frame.headers['user-name'];
 
     console.log('Connected: ' + frame);
 
@@ -131,7 +131,13 @@ function setupComponents() {
     ranking = new Vue({
         el: '#ranking',
         data: {
-          players: []
+            username: "",
+            players: []
+        },
+        computed: {
+            me : function() {
+                return _.find(this.players,{ 'playerName': this.username });
+            }
         }
     });
     actionLog = new Vue({
