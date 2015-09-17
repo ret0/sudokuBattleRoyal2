@@ -24,20 +24,31 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div id="ranking" class="col-md-4">
                 <div class="panel panel-default">
-                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Your Position</h3>
+                    </div>
+
+                    <!-- your position -->
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            {{mePosition}}. {{me.playerName}}
+                            <span class="badge">{{me.score}} Pkt.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Ranking</h3>
                     </div>
 
-                    <!-- List group -->
-                    <ul id="ranking" class="list-group">
+                    <!-- ranking -->
+                    <ul class="list-group">
                         <li v-repeat="player in players"
                             class="list-group-item">
-                            {{player.playerName}} <span class="badge">{{player.score}}
-                                {{player.score | pluralize ' Pkt.' '
-                                Pkt.'}}</span>
+                            {{$index + 1}}. {{player.playerName}}
+                            <span class="badge">{{player.score}} Pkt.</span>
                         </li>
                     </ul>
                 </div>
