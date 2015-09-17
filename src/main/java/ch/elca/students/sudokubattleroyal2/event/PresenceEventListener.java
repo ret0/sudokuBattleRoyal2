@@ -17,8 +17,6 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
 
     private String loginDestination;
 
-    private String logoutDestination;
-
     public PresenceEventListener(SimpMessagingTemplate messagingTemplate, PlayerManager playerManager) {
         this.messagingTemplate = messagingTemplate;
         this.playerManager = playerManager;
@@ -28,7 +26,7 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
         SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String username = headers.getUser().getName();
 
-        if(playerManager.playerIsNew(username)) {
+        if (playerManager.playerIsNew(username)) {
             PlayerConnectedEvent playerConnectedEvent = new PlayerConnectedEvent(username);
             messagingTemplate.convertAndSend(loginDestination, playerConnectedEvent);
 
@@ -37,13 +35,8 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
         }
     }
 
-
     public void setLoginDestination(String loginDestination) {
         this.loginDestination = loginDestination;
-    }
-
-    public void setLogoutDestination(String logoutDestination) {
-        this.logoutDestination = logoutDestination;
     }
 
     @Override

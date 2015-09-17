@@ -14,17 +14,17 @@ public class Game {
         return this.game;
     }
 
-    public Answer solve(int x, int y, int value) {
+    public GameUpdateType solve(int x, int y, int value) {
         if (solution[x][y] == value && game[x][y] == 0) {
             game[x][y] = value;
             if (isFinished()) {
-                return Answer.FINISHED;
+                return GameUpdateType.FINISHED;
             }
-            return Answer.CORRECT;
+            return GameUpdateType.CORRECT;
         } else if (solution[x][y] == value && game[x][y] != 0) {
-            return Answer.TOO_LATE;
+            return GameUpdateType.TOO_LATE;
         }
-        return Answer.WRONG;
+        return GameUpdateType.WRONG;
     }
 
     private boolean isFinished() {

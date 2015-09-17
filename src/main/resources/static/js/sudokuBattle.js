@@ -1,8 +1,8 @@
 var sudokuSocket = Stomp.over(new SockJS('/sockjsendpoint'));
 
-sudokuSocket.connect({},function(frame) {
+sudokuSocket.connect({}, function (frame) {
 
-    ranking.username = frame.headers['user-name'];
+    ranking.playerName = frame.headers['user-name'];
 
     console.log('Connected: ' + frame);
 
@@ -10,11 +10,11 @@ sudokuSocket.connect({},function(frame) {
         console.log(message);
         var playerConnectedEvent = JSON.parse(message.body)
         addConnectedPlayer(playerConnectedEvent);
-        addActionLog({playerName: playerConnectedEvent.username, update: "JOINED", text: "Joined"});
+        addActionLog({playerName: playerConnectedEvent.playerName, update: "JOINED", text: "Joined"});
     });
     sudokuSocket.subscribe('/app/game/players', function (message) {
         updateConnectedPlayers(JSON.parse(message.body));
-        addActionLog({playerName: username, update: "REGISTERED", text: "Registered"});
+        addActionLog({playerName: ranking.playerName, update: "REGISTERED", text: "Registered"});
     });
     sudokuSocket.subscribe('/topic/game/start', function (message) {
         initBoard(JSON.parse(message.body));
@@ -24,16 +24,20 @@ sudokuSocket.connect({},function(frame) {
         console.log(message);
         var gameUpdate = JSON.parse(message.body)
         update(gameUpdate);
-        addActionLog({playerName: gameUpdate.playerName, update: gameUpdate.update, text: "Scored: " + gameUpdate.scoreDelta});
-        if(gameUpdate.update === "FINISHED") {
-            addActionLog({playerName: "Application", update: gameUpdate.update, text: "Game Over"});
+        addActionLog({
+            playerName: gameUpdate.playerName,
+            update: gameUpdate.type,
+            text: "Scored: " + gameUpdate.scoreDelta
+        });
+        if (gameUpdate.type === "FINISHED") {
+            addActionLog({playerName: "Application", update: gameUpdate.type, text: "Game Over"});
         }
     });
     sudokuSocket.subscribe('/user/queue/attempt', function (message) {
         console.log(message);
         updateAttempt(JSON.parse(message.body));
     });
-}, function(error) {
+}, function (error) {
     console.error('Error:' + error);
 });
 
@@ -47,25 +51,27 @@ function initBoard(board) {
 
 function update(gameUpdate) {
     updateScoring(gameUpdate.playerName, gameUpdate.scoreDelta);
-    if (gameUpdate.update === "CORRECT" || gameUpdate.update === "FINISHED") {
+    if (gameUpdate.type === "CORRECT" || gameUpdate.type === "FINISHED") {
         setFieldValue(gameUpdate.x, gameUpdate.y, gameUpdate.value);
     }
 }
 
 function updateScoring(playerName, scoreDelta) {
-    _.find(ranking.players, { 'playerName': playerName }).score += scoreDelta;
-    ranking.players.sort(function(player1, player2){return player2.score - player1.score});
+    _.find(ranking.players, {'playerName': playerName}).score += scoreDelta;
+    ranking.players.sort(function (player1, player2) {
+        return player2.score - player1.score
+    });
 }
 
 function updateAttempt(gameUpdate) {
     var fieldInput = getFieldInput(gameUpdate.x, gameUpdate.y);
-    if (gameUpdate.update === "CORRECT" || gameUpdate.update === "FINISHED") {
+    if (gameUpdate.type === "CORRECT" || gameUpdate.type === "FINISHED") {
         setValueOnField(fieldInput, gameUpdate.value); //we set value again to assure sync with animation
         correctAnimationOnField(fieldInput);
-    } else if (gameUpdate.update === "WRONG") {
+    } else if (gameUpdate.type === "WRONG") {
         setValueOnField(fieldInput, 0);
         wrongAnimationOnField(fieldInput);
-    } else if (gameUpdate.update === "TOO_LATE") {
+    } else if (gameUpdate.type === "TOO_LATE") {
         tooLateAnimationOnField(fieldInput);
     }
 }
@@ -75,7 +81,7 @@ function getFieldInput(x, y) {
 }
 
 function setFieldValue(x, y, value) {
-    setValueOnField(getFieldInput(x,y), value);
+    setValueOnField(getFieldInput(x, y), value);
 }
 
 function setValueOnField(fieldInput, value) {
@@ -93,7 +99,7 @@ function updateConnectedPlayers(players) {
 }
 
 function addConnectedPlayer(playerConnectedEvent) {
-    ranking.players.unshift({playerName: playerConnectedEvent.username, score : 0});
+    ranking.players.unshift({playerName: playerConnectedEvent.playerName, score: 0});
 }
 
 function addActionLog(message) {
@@ -106,18 +112,18 @@ function correctAnimationOnField(fieldInput) {
 
 function wrongAnimationOnField(fieldInput) {
     $(fieldInput).transition({"background-color": "red"})
-    .transition({"background-color": "white"});
+        .transition({"background-color": "white"});
 }
 
 function tooLateAnimationOnField(fieldInput) {
     $(fieldInput).transition({"background-color": "blue"})
-    .transition({"background-color": "white"});
+        .transition({"background-color": "white"});
 }
 
 function setupInputHandler() {
     $('input').on('input', function (element) {
         if (this.value.length > 1) {
-            this.value = this.value.slice(0,1);
+            this.value = this.value.slice(0, 1);
         }
         var x = $(this).attr("data-x");
         var y = $(this).attr("data-y");
@@ -131,15 +137,15 @@ function setupComponents() {
     ranking = new Vue({
         el: '#ranking',
         data: {
-            username: "",
+            playerName: "",
             players: []
         },
         computed: {
-            me : function() {
-                return _.find(this.players,{ 'playerName': this.username });
+            me: function () {
+                return _.find(this.players, {'playerName': this.playerName});
             },
-            mePosition : function() {
-                return _.findIndex(this.players,{ 'playerName': this.username }) + 1;
+            mePosition: function () {
+                return _.findIndex(this.players, {'playerName': this.playerName}) + 1;
             }
         }
     });
@@ -169,43 +175,43 @@ function setupComponents() {
         el: '#sudoku',
         x: 0,
         y: 0,
-        ready: function() {
+        ready: function () {
             var self = this;
             $(this.$el).find("input").prop('disabled', true);
-            $(this.$el).on("focus", "input", function(event) {
+            $(this.$el).on("focus", "input", function (event) {
                 self.x = $(this).attr("data-x");
                 self.y = $(this).attr("data-y");
             });
-            $(this.$el).on("keydown", "input", function(e) {
+            $(this.$el).on("keydown", "input", function (e) {
                 if (e.keyCode == '37') {
                     e.preventDefault();
-                    self.focusNextEnabledField(function(x, y) {
+                    self.focusNextEnabledField(function (x, y) {
                         x = (((x - 1) % 9) + 9) % 9;
-                        return {x :x, y: y};
+                        return {x: x, y: y};
                     });
                 } else if (e.keyCode == '38') {
                     e.preventDefault();
-                    self.focusNextEnabledField(function(x, y) {
+                    self.focusNextEnabledField(function (x, y) {
                         y = (((y - 1) % 9) + 9) % 9;
-                        return {x :x, y: y};
+                        return {x: x, y: y};
                     });
                 } else if (e.keyCode == '39') {
                     e.preventDefault();
-                    self.focusNextEnabledField(function(x, y) {
+                    self.focusNextEnabledField(function (x, y) {
                         x = (((x + 1) % 9) + 9) % 9;
-                        return {x :x, y: y};
+                        return {x: x, y: y};
                     });
                 } else if (e.keyCode == '40') {
                     e.preventDefault();
-                    self.focusNextEnabledField(function(x, y) {
+                    self.focusNextEnabledField(function (x, y) {
                         y = (((y + 1) % 9) + 9) % 9;
-                        return {x :x, y: y};
+                        return {x: x, y: y};
                     });
                 }
             });
         },
         methods: {
-            mod: function(n, m) {
+            mod: function (n, m) {
                 return ((n % m) + m) % m;
             },
             focusNextEnabledField: function (move) {

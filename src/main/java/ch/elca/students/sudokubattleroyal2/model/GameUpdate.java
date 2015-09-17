@@ -1,6 +1,6 @@
 package ch.elca.students.sudokubattleroyal2.model;
 
-import ch.elca.students.sudokubattleroyal2.game.Answer;
+import ch.elca.students.sudokubattleroyal2.game.GameUpdateType;
 
 /**
  * Created by mkf on 13.08.2015.
@@ -8,23 +8,20 @@ import ch.elca.students.sudokubattleroyal2.game.Answer;
 public class GameUpdate {
 
     private String playerName;
-    private Answer update;
+    private GameUpdateType type;
     private int scoreDelta;
     private int x;
     private int y;
     private int value;
 
-    public GameUpdate() {
-    }
-
-    public GameUpdate(String playerName, Answer update, int scoreDelta, int x,
-            int y, int value) {
+    public GameUpdate(String playerName, GameUpdateType type, int scoreDelta, int x,
+                      int y, int value) {
         this.playerName = playerName;
-        this.update = update;
+        this.type = type;
         this.scoreDelta = scoreDelta;
         this.x = x;
         this.y = y;
-        if (Answer.WRONG.equals(update)) {
+        if (GameUpdateType.WRONG.equals(type)) {
             this.value = 0;
         } else {
             this.value = value;
@@ -40,18 +37,17 @@ public class GameUpdate {
     }
 
     /**
-     * @return the update
+     * @return the type
      */
-    public Answer getUpdate() {
-        return update;
+    public GameUpdateType getType() {
+        return type;
     }
 
     /**
-     * @param update
-     *            the update to set
+     * @param type the type to set
      */
-    public void setUpdate(Answer update) {
-        this.update = update;
+    public void setType(GameUpdateType type) {
+        this.type = type;
     }
 
     public int getScoreDelta() {
