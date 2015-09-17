@@ -33,7 +33,7 @@
                     <!-- your position -->
                     <ul class="list-group">
                         <li class="list-group-item">
-                            {{me.playerName}} <span class="badge">{{me.score}}
+                            {{mePosition}}. {{me.playerName}} <span class="badge">{{me.score}}
                                 {{player.score | pluralize ' Pkt.' '
                                 Pkt.'}}</span>
                         </li>
@@ -48,7 +48,7 @@
                     <ul class="list-group">
                         <li v-repeat="player in players"
                             class="list-group-item">
-                            {{player.playerName}} <span class="badge">{{player.score}}
+                            {{$index + 1}}. {{player.playerName}} <span class="badge">{{player.score}}
                                 {{player.score | pluralize ' Pkt.' '
                                 Pkt.'}}</span>
                         </li>

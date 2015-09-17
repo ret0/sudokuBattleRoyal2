@@ -137,6 +137,9 @@ function setupComponents() {
         computed: {
             me : function() {
                 return _.find(this.players,{ 'playerName': this.username });
+            },
+            mePosition : function() {
+                return _.findIndex(this.players,{ 'playerName': this.username }) + 1;
             }
         }
     });
