@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * @author rkb
+ * Created by mkf on 17.09.2015.
  */
 @Entity
 public class Player {
@@ -15,19 +15,6 @@ public class Player {
 
     @Column
     private String playerName;
-
-    @Column
-    private int score;
-
-    public Player() {
-        // nop
-        // required by hibernate
-    }
-
-    public Player(String playerId, String playerName) {
-        this.playerId = playerId;
-        this.playerName = playerName;
-    }
 
     public String getPlayerId() {
         return playerId;
@@ -43,13 +30,5 @@ public class Player {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 }
