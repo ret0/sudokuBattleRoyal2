@@ -238,7 +238,7 @@
                         <template
                             v-repeat="message in actionLogMessages">
                         <p
-                            v-class="green: isCorrect(message.update), red: isWrong(message.update), blue: isTooLate(message.update), action-log: isActionLog">
+                            v-class="green: isCorrect(message.update), red: isWrong(message.update), blue: isTooLate(message.update), bold: isFinished(message.update), action-log: isActionLog">
                             {{message.playerName}}: {{message.text}}</p>
                         </template>
                     </div>
