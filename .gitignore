@@ -1,5 +1,29 @@
 *.class
 
+# IntelliJ IDEA Files #
+
+*.iml
+*.ipr
+*.iws
+*.idea
+
+# Eclipse Files #
+.settings
+.metadata
+.classpath
+.project
+
+# Build Files #
+
+bin
+target
+
+# Spring Bootstrap artifacts
+
+dependency-reduced-pom.xml
+out
+README.html
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -10,3 +34,6 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# System Files #
+.DS_Store
