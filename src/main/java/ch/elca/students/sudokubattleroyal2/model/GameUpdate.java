@@ -24,7 +24,11 @@ public class GameUpdate {
         this.scoreDelta = scoreDelta;
         this.x = x;
         this.y = y;
-        this.value = value;
+        if (Answer.WRONG.equals(update)) {
+            this.value = 0;
+        } else {
+            this.value = value;
+        }
     }
 
     public String getPlayerName() {
