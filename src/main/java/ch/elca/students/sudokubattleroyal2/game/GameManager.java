@@ -27,11 +27,11 @@ public class GameManager {
 
     private static final int NUMBER_OF_BLANK_FIELDS = 40;
 
-    private static final Map<Answer, Integer> SCORE_MAPPING = ImmutableMap
-            .<Answer, Integer>builder().put(Answer.CORRECT, CORRECT_SCORE)
-            .put(Answer.WRONG, WRONG_SCORE)
-            .put(Answer.TOO_LATE, TOO_LATE_SCORE)
-            .put(Answer.FINISHED, CORRECT_SCORE).build();
+    private static final Map<GameUpdateType, Integer> SCORE_MAPPING = ImmutableMap
+            .<GameUpdateType, Integer>builder().put(GameUpdateType.CORRECT, CORRECT_SCORE)
+            .put(GameUpdateType.WRONG, WRONG_SCORE)
+            .put(GameUpdateType.TOO_LATE, TOO_LATE_SCORE)
+            .put(GameUpdateType.FINISHED, CORRECT_SCORE).build();
 
     private Game game;
 
@@ -43,7 +43,7 @@ public class GameManager {
     }
 
     public synchronized GameUpdate solve(String playerName, int x, int y, int value) {
-        Answer solveResponse = game.solve(x, y, value);
+        GameUpdateType solveResponse = game.solve(x, y, value);
         GameUpdate gameUpdate = new GameUpdate(playerName, solveResponse, SCORE_MAPPING.get(solveResponse)
                 .intValue(), x, y, value);
         updatePlayerScore(gameUpdate);

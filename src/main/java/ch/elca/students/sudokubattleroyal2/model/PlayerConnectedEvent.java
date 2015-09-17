@@ -5,17 +5,17 @@ package ch.elca.students.sudokubattleroyal2.model;
  */
 public class PlayerConnectedEvent {
 
-    private String username;
+    private String playerName;
 
-    public PlayerConnectedEvent(String username) {
-        this.username = username;
+    public PlayerConnectedEvent(String playerName) {
+        this.playerName = playerName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPlayerName() {
+        return playerName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 }
