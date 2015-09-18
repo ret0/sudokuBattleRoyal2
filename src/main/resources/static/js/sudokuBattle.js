@@ -26,12 +26,15 @@ sudokuSocket.connect({}, function (frame) {
     console.error('Error:' + error);
 });
 
-function initBoard(board) {
-    for (var x = 0; x < board.length; x++) {
-        for (var y = 0; y < board[0].length; y++) {
-            setFieldValue(x, y, board[x][y]);
+function setupInputHandler() {
+    $('input').on('input', function (element) {
+        if (this.value.length > 1) {
+            this.value = this.value.slice(0, 1);
         }
-    }
+        var x = $(this).attr("data-x");
+        var y = $(this).attr("data-y");
+        sudokuSocket.send("/app/solve", {}, JSON.stringify({x: x, y: y, value: this.value}));
+    });
 }
 
 function update(gameUpdate) {
@@ -84,13 +87,4 @@ function tooLateAnimationOnField(fieldInput) {
         .transition({"background-color": "white"});
 }
 
-function setupInputHandler() {
-    $('input').on('input', function (element) {
-        if (this.value.length > 1) {
-            this.value = this.value.slice(0, 1);
-        }
-        var x = $(this).attr("data-x");
-        var y = $(this).attr("data-y");
-        sudokuSocket.send("/app/solve", {}, JSON.stringify({x: x, y: y, value: this.value}));
-    });
-}
+

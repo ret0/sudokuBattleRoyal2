@@ -21,11 +21,7 @@ public class GameUpdate {
         this.scoreDelta = scoreDelta;
         this.x = x;
         this.y = y;
-        if (GameUpdateType.WRONG.equals(type)) {
-            this.value = 0;
-        } else {
-            this.value = value;
-        }
+        this.value = value;
     }
 
     public String getPlayerName() {

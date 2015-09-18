@@ -1,5 +1,8 @@
 package ch.elca.students.sudokubattleroyal2.model;
 
+/**
+ * DTO that is sent by the client (automatic deserialization of JSON object)
+ */
 public class SolveMessage {
 
     private int x;
