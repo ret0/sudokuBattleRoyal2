@@ -8,12 +8,10 @@
 <script src="js/stomp.js"></script>
 <script src="js/jquery-2.1.4.min.js"></script>
 <script src="js/jquery.transit.min.js"></script>
-<script src="js/vue.min.js"></script>
-<script src="js/lodash.min.js"></script>
 <script src="js/sudokuBattle.js"></script>
 </head>
 
-<body onload="setupInputHandler();setupComponents();">
+<body onload="setupInputHandler();">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -25,32 +23,11 @@
     <div class="container">
         <div class="row">
             <div id="ranking" class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Your Position</h3>
-                    </div>
 
-                    <!-- your position -->
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            {{mePosition}}. {{me.playerName}}
-                            <span class="badge">{{me.score}} Pkt.</span>
-                        </li>
-                    </ul>
-                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Ranking</h3>
                     </div>
-
-                    <!-- ranking -->
-                    <ul class="list-group">
-                        <li v-repeat="player in players"
-                            class="list-group-item">
-                            {{$index + 1}}. {{player.playerName}}
-                            <span class="badge">{{player.score}} Pkt.</span>
-                        </li>
-                    </ul>
                 </div>
             </div>
             <div class="col-md-4">
@@ -244,14 +221,6 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Action Log</h3>
-                    </div>
-                    <div id="actionLog" class="action-log-container">
-                        <template
-                            v-repeat="message in actionLogMessages">
-                        <p
-                            v-class="green: isCorrect(message.update), red: isWrong(message.update), blue: isTooLate(message.update), bold: isFinished(message.update), action-log: isActionLog">
-                            {{message.playerName}}: {{message.text}}</p>
-                        </template>
                     </div>
                 </div>
             </div>

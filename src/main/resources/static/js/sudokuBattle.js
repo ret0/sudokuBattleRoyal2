@@ -7,31 +7,16 @@ sudokuSocket.connect({}, function (frame) {
     console.log('Connected: ' + frame);
 
     sudokuSocket.subscribe('/topic/game/login', function (message) {
-        console.log(message);
-        var playerConnectedEvent = JSON.parse(message.body)
-        addConnectedPlayer(playerConnectedEvent);
-        addActionLog({playerName: playerConnectedEvent.playerName, update: "JOINED", text: "Joined"});
+        console.log("/topic/game/login called: " + message.body);
     });
     sudokuSocket.subscribe('/app/game/players', function (message) {
-        updateConnectedPlayers(JSON.parse(message.body));
-        addActionLog({playerName: ranking.playerName, update: "REGISTERED", text: "Registered"});
+        console.log("app/game/players called: " + message.body);
     });
-    sudokuSocket.subscribe('/topic/game/start', function (message) {
-        initBoard(JSON.parse(message.body));
-        addActionLog({playerName: "Application", update: "STARTED", text: "Game Started"});
-    });
+
     sudokuSocket.subscribe('/topic/game/update', function (message) {
         console.log(message);
         var gameUpdate = JSON.parse(message.body)
         update(gameUpdate);
-        addActionLog({
-            playerName: gameUpdate.playerName,
-            update: gameUpdate.type,
-            text: "Scored: " + gameUpdate.scoreDelta
-        });
-        if (gameUpdate.type === "FINISHED") {
-            addActionLog({playerName: "Application", update: gameUpdate.type, text: "Game Over"});
-        }
     });
     sudokuSocket.subscribe('/user/queue/attempt', function (message) {
         console.log(message);
@@ -50,17 +35,9 @@ function initBoard(board) {
 }
 
 function update(gameUpdate) {
-    updateScoring(gameUpdate.playerName, gameUpdate.scoreDelta);
     if (gameUpdate.type === "CORRECT" || gameUpdate.type === "FINISHED") {
         setFieldValue(gameUpdate.x, gameUpdate.y, gameUpdate.value);
     }
-}
-
-function updateScoring(playerName, scoreDelta) {
-    _.find(ranking.players, {'playerName': playerName}).score += scoreDelta;
-    ranking.players.sort(function (player1, player2) {
-        return player2.score - player1.score
-    });
 }
 
 function updateAttempt(gameUpdate) {
@@ -87,23 +64,10 @@ function setFieldValue(x, y, value) {
 function setValueOnField(fieldInput, value) {
     if (value === 0) {
         fieldInput.value = "";
-        fieldInput.disabled = false;
     } else {
         fieldInput.value = value;
         fieldInput.disabled = true;
     }
-}
-
-function updateConnectedPlayers(players) {
-    ranking.players = players;
-}
-
-function addConnectedPlayer(playerConnectedEvent) {
-    ranking.players.unshift({playerName: playerConnectedEvent.playerName, score: 0});
-}
-
-function addActionLog(message) {
-    actionLog.actionLogMessages.unshift(message);
 }
 
 function correctAnimationOnField(fieldInput) {
@@ -128,101 +92,5 @@ function setupInputHandler() {
         var x = $(this).attr("data-x");
         var y = $(this).attr("data-y");
         sudokuSocket.send("/app/solve", {}, JSON.stringify({x: x, y: y, value: this.value}));
-    });
-}
-var ranking;
-var actionLog;
-var sudoku;
-function setupComponents() {
-    ranking = new Vue({
-        el: '#ranking',
-        data: {
-            playerName: "",
-            players: []
-        },
-        computed: {
-            me: function () {
-                return _.find(this.players, {'playerName': this.playerName});
-            },
-            mePosition: function () {
-                return _.findIndex(this.players, {'playerName': this.playerName}) + 1;
-            }
-        }
-    });
-    actionLog = new Vue({
-        el: '#actionLog',
-        data: {
-            actionLogMessages: [],
-            isCorrect: function (update) {
-                return update === "CORRECT";
-            },
-            isTooLate: function (update) {
-                return update === "TOO_LATE";
-            },
-            isWrong: function (update) {
-                return update === "WRONG";
-            },
-            isFinished: function (update) {
-                return update === "FINISHED";
-            },
-            isActionLog: function () {
-                return true;
-            }
-        }
-    });
-    sudoku = new Vue({
-        self: this,
-        el: '#sudoku',
-        x: 0,
-        y: 0,
-        ready: function () {
-            var self = this;
-            $(this.$el).find("input").prop('disabled', true);
-            $(this.$el).on("focus", "input", function (event) {
-                self.x = $(this).attr("data-x");
-                self.y = $(this).attr("data-y");
-            });
-            $(this.$el).on("keydown", "input", function (e) {
-                if (e.keyCode == '37') {
-                    e.preventDefault();
-                    self.focusNextEnabledField(function (x, y) {
-                        x = (((x - 1) % 9) + 9) % 9;
-                        return {x: x, y: y};
-                    });
-                } else if (e.keyCode == '38') {
-                    e.preventDefault();
-                    self.focusNextEnabledField(function (x, y) {
-                        y = (((y - 1) % 9) + 9) % 9;
-                        return {x: x, y: y};
-                    });
-                } else if (e.keyCode == '39') {
-                    e.preventDefault();
-                    self.focusNextEnabledField(function (x, y) {
-                        x = (((x + 1) % 9) + 9) % 9;
-                        return {x: x, y: y};
-                    });
-                } else if (e.keyCode == '40') {
-                    e.preventDefault();
-                    self.focusNextEnabledField(function (x, y) {
-                        y = (((y + 1) % 9) + 9) % 9;
-                        return {x: x, y: y};
-                    });
-                }
-            });
-        },
-        methods: {
-            mod: function (n, m) {
-                return ((n % m) + m) % m;
-            },
-            focusNextEnabledField: function (move) {
-                var newField = move(this.x, this.y);
-                while ($('input[data-x=' + newField.x + '][data-y=' + newField.y + ']')[0].disabled == true) {
-                    newField = move(newField.x, newField.y);
-                }
-                this.x = newField.x;
-                this.y = newField.y;
-                $('input[data-x=' + this.x + '][data-y=' + this.y + ']').focus();
-            }
-        }
     });
 }
