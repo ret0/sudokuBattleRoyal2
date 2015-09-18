@@ -1,10 +1,10 @@
-var sudokuSocket = Stomp.over(new SockJS('/sockjsendpoint'));
+var sudokuSocket = Stomp.over(new SockJS('??'));
 
 sudokuSocket.connect({}, function (frame) {
 
     console.log('Connected: ' + frame);
 
-    sudokuSocket.subscribe('/app/game/players', function (message) {
+    sudokuSocket.subscribe('??', function (message) {
         console.log("Subscribe called, message body: " + message.body);
     });
 
