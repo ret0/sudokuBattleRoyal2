@@ -135,11 +135,7 @@ var actionLog;
 var sudoku;
 function setupComponents() {
     ranking = new Vue({
-        el: '#ranking',
-        data: {
-            playerName: "",
-            players: []
-        },
+        //TODO map view and model to VM
         computed: {
             me: function () {
                 return _.find(this.players, {'playerName': this.playerName});
