@@ -12,18 +12,17 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        // TODO enable broker for /topic
         /*
          * The "/app" prefix is arbitrary. You can pick any prefix. It’s simply
          * meant to differentiate messages to be routed to message-handling methods to do application work vs
          * messages to be routed to the broker to broadcast to subscribed clients.
          */
-        // TODO Set Prefix
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // TODO fix socks endpoint
-        registry.addEndpoint("???").withSockJS();
+        registry.addEndpoint("/sockjsendpoint").withSockJS();
     }
-
 }
