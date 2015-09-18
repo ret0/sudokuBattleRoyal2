@@ -16,7 +16,4 @@ public class PlayerManager {
         playerRepository.save(player);
     }
 
-    public boolean playerIsNew(String playerName) {
-        return playerRepository.findOneByPlayerName(playerName) == null;
-    }
 }
