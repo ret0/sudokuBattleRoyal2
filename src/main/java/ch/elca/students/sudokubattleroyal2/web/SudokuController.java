@@ -7,7 +7,6 @@ import ch.elca.students.sudokubattleroyal2.model.SolveMessage;
 import ch.elca.students.sudokubattleroyal2.persistence.PlayerRepository;
 import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
@@ -31,11 +30,11 @@ public class SudokuController {
      * An attempt at filling in the correct value
      * for one field.
      */
-    @MessageMapping("/solve")
+    //TODO add message mapping for "/solve"
     public void solve(SolveMessage message, Principal principal) throws Exception {
         GameUpdate gameUpdate = gameManager.solve(principal.getName(), message.getX(), message.getY(), message.getValue());
-        simpMessagingTemplate.convertAndSendToUser(principal.getName(), "/queue/attempt", gameUpdate);
-        simpMessagingTemplate.convertAndSend("/topic/game/update", gameUpdate);
+        //TODO sentToUser on "/queue/attempt"
+        //TODO sentToAll on "/topic/game/update"
     }
 
     @SubscribeMapping("/game/players")

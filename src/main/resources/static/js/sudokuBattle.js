@@ -2,8 +2,6 @@ var sudokuSocket = Stomp.over(new SockJS('/sockjsendpoint'));
 
 sudokuSocket.connect({}, function (frame) {
 
-    ranking.playerName = frame.headers['user-name'];
-
     console.log('Connected: ' + frame);
 
     sudokuSocket.subscribe('/topic/game/login', function (message) {
@@ -12,11 +10,9 @@ sudokuSocket.connect({}, function (frame) {
     sudokuSocket.subscribe('/app/game/players', function (message) {
         console.log("app/game/players called: " + message.body);
     });
-
     sudokuSocket.subscribe('/topic/game/update', function (message) {
         console.log(message);
-        var gameUpdate = JSON.parse(message.body)
-        update(gameUpdate);
+        updateGameState(JSON.parse(message.body));
     });
     sudokuSocket.subscribe('/user/queue/attempt', function (message) {
         console.log(message);
@@ -33,11 +29,11 @@ function setupInputHandler() {
         }
         var x = $(this).attr("data-x");
         var y = $(this).attr("data-y");
-        sudokuSocket.send("/app/solve", {}, JSON.stringify({x: x, y: y, value: this.value}));
+        sudokuSocket.send("???", {}, JSON.stringify({x: x, y: y, value: this.value}));
     });
 }
 
-function update(gameUpdate) {
+function updateGameState(gameUpdate) {
     if (gameUpdate.type === "CORRECT" || gameUpdate.type === "FINISHED") {
         setFieldValue(gameUpdate.x, gameUpdate.y, gameUpdate.value);
     }
