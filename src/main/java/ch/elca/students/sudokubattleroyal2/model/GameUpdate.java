@@ -2,9 +2,6 @@ package ch.elca.students.sudokubattleroyal2.model;
 
 import ch.elca.students.sudokubattleroyal2.game.GameUpdateType;
 
-/**
- * Created by mkf on 13.08.2015.
- */
 public class GameUpdate {
 
     private String playerName;

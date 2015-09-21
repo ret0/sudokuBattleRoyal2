@@ -1,5 +1,10 @@
 package ch.elca.students.sudokubattleroyal2.model;
 
+/**
+ * A solve-attempt sent by a client, x and y are the coordinates
+ * <p/>
+ * (0/0) is top left
+ */
 public class SolveMessage {
 
     private int x;

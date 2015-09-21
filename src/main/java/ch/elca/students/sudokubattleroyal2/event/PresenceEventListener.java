@@ -15,8 +15,6 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
 
     private SimpMessagingTemplate messagingTemplate;
 
-    private String loginDestination;
-
     public PresenceEventListener(SimpMessagingTemplate messagingTemplate, PlayerManager playerManager) {
         this.messagingTemplate = messagingTemplate;
         this.playerManager = playerManager;
@@ -27,16 +25,9 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
         String username = headers.getUser().getName();
 
         if (playerManager.playerIsNew(username)) {
-            PlayerConnectedEvent playerConnectedEvent = new PlayerConnectedEvent(username);
-            messagingTemplate.convertAndSend(loginDestination, playerConnectedEvent);
-
-            // We store the session as we need to be idempotent in the disconnect event processing
+            messagingTemplate.convertAndSend("/topic/game/login", new PlayerConnectedEvent(username));
             playerManager.add(new Player(headers.getSessionId(), username));
         }
-    }
-
-    public void setLoginDestination(String loginDestination) {
-        this.loginDestination = loginDestination;
     }
 
     @Override

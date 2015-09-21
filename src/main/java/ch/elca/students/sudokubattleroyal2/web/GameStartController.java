@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Handles the Game-Admin related functionality.
+ */
 @RestController
 public class GameStartController implements EnvironmentAware {
 
@@ -36,14 +39,6 @@ public class GameStartController implements EnvironmentAware {
             simpMessagingTemplate.convertAndSend("/topic/game/start",
                     game.getGameBoard());
             log.info("Game Started...");
-        }
-    }
-
-    @RequestMapping(value = "/admin/reset", method = RequestMethod.POST)
-    public void resetGame(@RequestParam("appId") String appId) {
-        if (appId.equals(applicationIdFromEnv)) {
-            gameManager.resetGameState();
-            log.info("Game Reset...");
         }
     }
 

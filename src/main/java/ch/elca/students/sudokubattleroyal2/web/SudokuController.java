@@ -29,7 +29,7 @@ public class SudokuController {
 
     /**
      * An attempt at filling in the correct value
-     * for one field.
+     * for one field. Spring Security ensures that the principal is correctly filled out (matching the users session)
      */
     @MessageMapping("/solve")
     public void solve(SolveMessage message, Principal principal) throws Exception {
@@ -38,6 +38,10 @@ public class SudokuController {
         simpMessagingTemplate.convertAndSend("/topic/game/update", gameUpdate);
     }
 
+    /**
+     * Whenever a clients subscribes to the the topic "/game/players"
+     * immediately return a list of already connected players, INCLUDING one self.
+     */
     @SubscribeMapping("/game/players")
     public List<Player> retrieveParticipants() {
         return ImmutableList.copyOf(playerRepository.findAll());

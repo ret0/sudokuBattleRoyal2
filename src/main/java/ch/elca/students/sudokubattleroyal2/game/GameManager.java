@@ -21,11 +21,11 @@ public class GameManager {
     private static final Logger log = LoggerFactory
             .getLogger(GameManager.class);
 
-    private static final Integer CORRECT_SCORE = 10;
+    private static final Integer CORRECT_SCORE = 6;
     private static final Integer WRONG_SCORE = -2;
     private static final Integer TOO_LATE_SCORE = 0;
 
-    private static final int NUMBER_OF_BLANK_FIELDS = 40;
+    private static final int NUMBER_OF_BLANK_FIELDS = 42;
 
     private static final Map<GameUpdateType, Integer> SCORE_MAPPING = ImmutableMap
             .<GameUpdateType, Integer>builder().put(GameUpdateType.CORRECT, CORRECT_SCORE)
@@ -56,6 +56,7 @@ public class GameManager {
                 sorted((p1, p2) -> Integer.valueOf(p1.getScore()).compareTo(p2.getScore())).
                 map(player -> "Playername: " + player.getPlayerName() + " Score: " + player.getScore()).
                 collect(Collectors.joining("\n"));
+
         log.info("SCOREBOARD:\n" + currentScoreBoard);
     }
 
@@ -69,8 +70,4 @@ public class GameManager {
         return game != null;
     }
 
-    public void resetGameState() {
-        game = null;
-        playerRepository.deleteAllInBatch();
-    }
 }
