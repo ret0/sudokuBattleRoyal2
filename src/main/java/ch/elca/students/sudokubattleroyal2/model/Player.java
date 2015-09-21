@@ -4,9 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-/**
- * Created by mkf on 17.09.2015.
- */
 @Entity
 public class Player {
 
