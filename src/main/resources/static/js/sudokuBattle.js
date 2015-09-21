@@ -8,7 +8,6 @@ sudokuSocket.connect({}, function (frame) {
         console.log("Subscribe called, message body: " + message.body);
     });
 
-
 }, function (error) {
     console.error('Error:' + error);
 });

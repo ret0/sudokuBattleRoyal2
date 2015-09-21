@@ -23,8 +23,6 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
     private void handleSessionConnected(SessionConnectEvent event) {
         SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String username = headers.getUser().getName();
-
-        // We store the session as we need to be idempotent in the disconnect event processing
         playerManager.add(new Player(headers.getSessionId(), username));
     }
 
