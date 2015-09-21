@@ -1,7 +1,6 @@
 package ch.elca.students.sudokubattleroyal2.event;
 
 import ch.elca.students.sudokubattleroyal2.game.PlayerManager;
-import ch.elca.students.sudokubattleroyal2.model.Player;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -23,13 +22,10 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
     private void handleSessionConnected(SessionConnectEvent event) {
         SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String username = headers.getUser().getName();
-        playerManager.add(new Player(headers.getSessionId(), username));
+
+        //TODO addPlayer to repository using the PlayerManager
+
     }
 
-    @Override
-    public void onApplicationEvent(ApplicationEvent event) {
-        if (event instanceof SessionConnectEvent) {
-            handleSessionConnected((SessionConnectEvent) event);
-        }
-    }
+    
 }
