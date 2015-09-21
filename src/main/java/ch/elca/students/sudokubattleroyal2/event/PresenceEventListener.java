@@ -25,6 +25,7 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
 
         //TODO send new player connected event to topic "/topic/game/login"
 
+
         // We store the session as we need to be idempotent in the disconnect event processing
         playerManager.add(new Player(headers.getSessionId(), username));
     }
