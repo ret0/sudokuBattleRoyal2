@@ -33,8 +33,8 @@ public class SudokuController {
     //TODO add message mapping for "/solve"
     public void solve(SolveMessage message, Principal principal) throws Exception {
         GameUpdate gameUpdate = gameManager.solve(principal.getName(), message.getX(), message.getY(), message.getValue());
-        //TODO sentToUser on "/queue/attempt"
-        //TODO sentToAll on "/topic/game/update"
+        //TODO sendToUser on "/queue/attempt"
+        //TODO sendToAll on "/topic/game/update"
     }
 
     @SubscribeMapping("/game/players")

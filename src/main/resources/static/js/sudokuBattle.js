@@ -29,7 +29,9 @@ function setupInputHandler() {
         }
         var x = $(this).attr("data-x");
         var y = $(this).attr("data-y");
-        sudokuSocket.send("???", {}, JSON.stringify({x: x, y: y, value: this.value}));
+
+        //TODO send solve attempt to destination "/app/solve"
+
     });
 }
 
