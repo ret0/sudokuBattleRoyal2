@@ -31,6 +31,7 @@ function setupInputHandler() {
         var y = $(this).attr("data-y");
 
         //TODO send solve attempt to destination "/app/solve"
+        
 
     });
 }
