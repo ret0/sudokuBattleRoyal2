@@ -31,7 +31,7 @@ function setupInputHandler() {
         var y = $(this).attr("data-y");
 
         //TODO send solve attempt to destination "/app/solve"
-        
+
 
     });
 }
@@ -73,11 +73,11 @@ function setValueOnField(fieldInput, value) {
 }
 
 function correctAnimationOnField(fieldInput) {
-    $(fieldInput).transition({"background-color": "green"});
+    $(fieldInput).transition({"background-color": "#7ce89b"});
 }
 
 function wrongAnimationOnField(fieldInput) {
-    $(fieldInput).transition({"background-color": "red"})
+    $(fieldInput).transition({"background-color": "rgba(255, 80, 44, 0.64)"})
         .transition({"background-color": "white"});
 }
 
