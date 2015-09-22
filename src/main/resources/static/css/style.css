@@ -64,15 +64,15 @@ input[type=number] {
 }
 
 .red {
-    color: red;
+    color: rgba(255, 80, 44, 0.64);
 }
 
 .blue {
-    color: blue;
+    color: #50aaff;
 }
 
 .green {
-    color: green;
+    color: #7ce89b;
 }
 
 .bold {
