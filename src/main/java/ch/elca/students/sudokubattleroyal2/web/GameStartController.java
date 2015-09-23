@@ -39,14 +39,6 @@ public class GameStartController implements EnvironmentAware {
         }
     }
 
-    @RequestMapping(value = "/admin/reset", method = RequestMethod.POST)
-    public void resetGame(@RequestParam("appId") String appId) {
-        if (appId.equals(applicationIdFromEnv)) {
-            gameManager.resetGameState();
-            log.info("Game Reset...");
-        }
-    }
-
     @Override
     public void setEnvironment(Environment environment) {
         String environmentProperty = environment.getProperty(ENV_KEY_APPLICATION_ID);
