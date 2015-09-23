@@ -48,16 +48,21 @@ public class GameManager {
                 .intValue(), x, y, value);
         updatePlayerScore(gameUpdate);
         logCurrentPlayerScore();
+        if (solveResponse == GameUpdateType.FINISHED) {
+            log.info("Game Finished, score: " + collectPlayerScoreInfo());
+        }
         return gameUpdate;
     }
 
-    private void logCurrentPlayerScore() {
-        String currentScoreBoard = playerRepository.findAll().stream().
-                sorted((p1, p2) -> Integer.valueOf(p1.getScore()).compareTo(p2.getScore())).
+    private String collectPlayerScoreInfo() {
+        return playerRepository.findAll().stream().
+                sorted((p1, p2) -> Integer.valueOf(p2.getScore()).compareTo(p1.getScore())).
                 map(player -> "Playername: " + player.getPlayerName() + " Score: " + player.getScore()).
-                collect(Collectors.joining("\n"));
+                collect(Collectors.joining(" | "));
+    }
 
-        log.info("SCOREBOARD:\n" + currentScoreBoard);
+    private void logCurrentPlayerScore() {
+        log.info("Current Scoreboard: " + collectPlayerScoreInfo());
     }
 
     private void updatePlayerScore(GameUpdate gameUpdate) {
